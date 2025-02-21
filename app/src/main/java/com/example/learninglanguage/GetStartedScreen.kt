@@ -4,6 +4,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.learninglanguage.pages.LoginPage
+import com.example.learninglanguage.pages.SignUpPage
+
+
+
+@Composable
+fun MyGetStartedScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Text("The free, fun, and effective way to learn a language")
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        BtnGetStarted {
+            navController.navigate("signup") // Chuyển sang màn hình đăng ký
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        BtnHaveAccount {
+            println("Have Account button clicked!")
+            navController.navigate("signin")
+        }
+    }
+}
 
 @Composable
 fun BtnGetStarted(onClick: () -> Unit) {
@@ -12,46 +47,19 @@ fun BtnGetStarted(onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
-        )
-        ,
+        ),
         modifier = Modifier.width(400.dp)
     ) {
         Text("Get Started")
     }
 }
+
 @Composable
-fun BtnHaveAccount(onClick: () -> Unit){
+fun BtnHaveAccount(onClick: () -> Unit) {
     OutlinedButton(
         onClick = onClick,
         modifier = Modifier.width(400.dp)
     ) {
         Text("I Already have an account")
-    }
-}
-
-
-@Composable
-fun MyScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(60.dp)) // Tạo khoảng cách giữa hai nút
-
-        Text("The free, fun, and effective way to learn a language")
-
-        Spacer(modifier = Modifier.height(60.dp)) // Tạo khoảng cách giữa hai nút
-
-        BtnGetStarted(onClick = {
-            println("Get Started button clicked!")
-        })
-
-        Spacer(modifier = Modifier.height(16.dp)) // Tạo khoảng cách giữa hai nút
-
-        BtnHaveAccount(onClick = {
-            println("Have Account button clicked!")
-        })
     }
 }
