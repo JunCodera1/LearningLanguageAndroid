@@ -1,4 +1,4 @@
-package com.example.learninglanguage.pages
+package com.example.learninglanguage.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.res.painterResource
@@ -30,11 +28,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.learninglanguage.AuthState
-import com.example.learninglanguage.AuthViewModel
+import com.example.learninglanguage.viewmodel.AuthState
+import com.example.learninglanguage.viewmodel.AuthViewModel
 import com.example.learninglanguage.R
 
 

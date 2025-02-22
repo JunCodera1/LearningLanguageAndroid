@@ -1,4 +1,4 @@
-package com.example.learninglanguage
+package com.example.learninglanguage.ui.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size

@@ -1,4 +1,4 @@
-package com.example.learninglanguage.pages
+package com.example.learninglanguage.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.learninglanguage.AuthState
-import com.example.learninglanguage.AuthViewModel
+import com.example.learninglanguage.viewmodel.AuthState
+import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
-fun HomePage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
     val authState = authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState.value) {

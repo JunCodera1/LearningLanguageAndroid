@@ -1,4 +1,4 @@
-package com.example.learninglanguage
+package com.example.learninglanguage.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -33,7 +33,8 @@ class AuthViewModel : ViewModel() {
                     _authState.value = AuthState.Authenticated
                 }
                 else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Something went wrong")
+                    _authState.value =
+                        AuthState.Error(task.exception?.message ?: "Something went wrong")
                 }
             }
     }
@@ -57,11 +58,14 @@ class AuthViewModel : ViewModel() {
                         if (updateTask.isSuccessful) {
                             _authState.value = AuthState.Authenticated
                         } else {
-                            _authState.value = AuthState.Error(updateTask.exception?.message ?: "Failed to update profile")
+                            _authState.value = AuthState.Error(
+                                updateTask.exception?.message ?: "Failed to update profile"
+                            )
                         }
                     }
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message ?: "Something went wrong")
+                    _authState.value =
+                        AuthState.Error(task.exception?.message ?: "Something went wrong")
                 }
             }
     }

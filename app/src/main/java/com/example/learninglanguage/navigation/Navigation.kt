@@ -1,16 +1,17 @@
-package com.example.learninglanguage
+package com.example.learninglanguage.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.learninglanguage.pages.HomePage
-import com.example.learninglanguage.pages.LoginPage
-import com.example.learninglanguage.pages.SignUpPage
+import com.example.learninglanguage.ui.screens.HomeScreen
+import com.example.learninglanguage.ui.screens.LoginPage
+import com.example.learninglanguage.ui.screens.SignUpPage
+import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
-fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel){
+fun Navigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel){
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login", builder = {
@@ -21,7 +22,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
             SignUpPage(modifier, navController, authViewModel)
         }
         composable("home"){
-            HomePage(modifier, navController, authViewModel)
+            HomeScreen(modifier, navController, authViewModel)
         }
     })
 }

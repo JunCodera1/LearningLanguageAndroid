@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-    import com.example.learninglanguage.ui.theme.LearningLanguageTheme
+import com.example.learninglanguage.navigation.Navigation
+import com.example.learninglanguage.ui.theme.LearningLanguageTheme
+import com.example.learninglanguage.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LearningLanguageTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyAppNavigation(modifier = Modifier.padding(innerPadding),authViewModel = authViewModel)
+                    Navigation(modifier = Modifier.padding(innerPadding),authViewModel = authViewModel)
                 }
             }
         }
