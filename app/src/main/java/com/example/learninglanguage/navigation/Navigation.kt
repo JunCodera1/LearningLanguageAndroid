@@ -1,5 +1,6 @@
 package com.example.learninglanguage.navigation
 
+import GetStartedScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -14,7 +15,10 @@ import com.example.learninglanguage.viewmodel.AuthViewModel
 fun Navigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login", builder = {
+    NavHost(navController = navController, startDestination = "get-started", builder = {
+        composable("get-started"){
+            GetStartedScreen(navController)
+        }
         composable("login"){
             LoginPage(modifier, navController, authViewModel)
         }

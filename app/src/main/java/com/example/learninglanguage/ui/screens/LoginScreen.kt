@@ -20,29 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.learninglanguage.ui.components.BtnDontHaveAnAccount
+import com.example.learninglanguage.ui.components.BtnLogin
+import com.example.learninglanguage.ui.components.BtnLoginWithFB
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
 
-@Composable
-fun BtnSignIn(onClick: () -> Unit){
-    OutlinedButton(
-        onClick = onClick,
-        modifier = Modifier.width(400.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
 
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Sign In")
-        }
-    }
-}
 
-@Composable
-fun BtnDontHaveAnAccount(onClick: () -> Unit){
-    TextButton(onClick = onClick) {
-        Text("Don't have an account? Sign Up")
-    }
-}
 
 @Composable
 fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
@@ -74,15 +59,21 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
         )
 
         Spacer(modifier = Modifier.height(60.dp))
-        BtnSignIn ({
+        BtnLogin ({
          authViewModel.run { login(emailState.value, passwordState.value) }
         navController.navigate("home")
         })
 
         Spacer(modifier = Modifier.height(60.dp))
-        BtnDontHaveAnAccount {
+
+        BtnLoginWithFB({
+            // Thêm logic đăng nhập với Facebook nếu có
+        })
+        Spacer(modifier = Modifier.height(30.dp))
+
+        BtnDontHaveAnAccount ({
             navController.navigate("signup")
-        }
+        })
 
     }
 }

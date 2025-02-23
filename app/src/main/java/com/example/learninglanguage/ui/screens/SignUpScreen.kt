@@ -31,53 +31,12 @@ import androidx.navigation.NavController
 import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
 import com.example.learninglanguage.R
+import com.example.learninglanguage.ui.components.BtnLoginWithFB
+import com.example.learninglanguage.ui.components.BtnSignUp
+import com.example.learninglanguage.ui.components.TextButtonHaveAccount
 
 
-@Composable
-fun BtnLoginWithFB(onClick: () -> Unit){
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        ),
-        modifier = Modifier.width(400.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = R.drawable.fb_logo), // Thay thế bằng icon của bạn
-                contentDescription = "Facebook Logo",
-                modifier = Modifier.size(30.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Login with FB")
-        }
-    }
-}
 
-@Composable
-fun BtnSignUp(onClick: () -> Unit){
-    OutlinedButton(
-        onClick = onClick,
-
-        modifier = Modifier.width(400.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Sign Up")
-        }
-    }
-}
-
-@Composable
-fun BtnHaveAnAccount(onClick: () -> Unit){
-    TextButton(
-        onClick = onClick
-    ) {
-        Text("Already have an account ?")
-    }
-}
 
 @Composable
 fun SignUpPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
@@ -141,7 +100,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController, auth
         })
         Spacer(modifier = Modifier.height(30.dp))
 
-        BtnHaveAnAccount {
+        TextButtonHaveAccount {
             navController.navigate("login")
         }
     }
