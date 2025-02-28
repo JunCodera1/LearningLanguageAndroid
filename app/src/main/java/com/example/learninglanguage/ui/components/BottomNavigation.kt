@@ -1,5 +1,6 @@
 package com.example.learninglanguage.ui.components
 
+import android.app.Notification
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.learninglanguage.navigation.NavItem
+import com.example.learninglanguage.ui.screens.HomeScreen
+import com.example.learninglanguage.ui.screens.NotificationScreen
+import com.example.learninglanguage.ui.screens.SettingsScreen
+
 @Composable
 fun BottomNavigation(modifier: Modifier = Modifier){
     val navItemList = listOf(
@@ -28,17 +33,17 @@ fun BottomNavigation(modifier: Modifier = Modifier){
         NavItem("Notification", Icons.Default.Notifications),
         NavItem("Settings", Icons.Default.Settings)
     )
-    val selectedIndex by remember { mutableIntStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
-                navItemList.forEachIndexed{ _, navItem ->
+                navItemList.forEachIndexed{ index, navItem ->
                     NavigationBarItem(
                         icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
                         label = { Text(text = navItem.label) },
-                        selected = true, // Cần logic xử lý trạng thái được chọn
-                        onClick = { /* TODO: Handle navigation */ }
+                        selected = selectedIndex == index, // Cần logic xử lý trạng thái được chọn
+                        onClick = { selectedIndex = index }
                     )
                 }
             }
@@ -48,5 +53,14 @@ fun BottomNavigation(modifier: Modifier = Modifier){
             text = "Selected: ${navItemList[selectedIndex].label}",
             modifier = Modifier.padding(innerPadding).padding(16.dp)
         )
+    }
+}
+
+@Composable
+fun MovingInNav(modifier: Modifier = Modifier, selectedIndex: Int){
+    when(selectedIndex){
+        0 -> HomeScreen()
+        1 -> NotificationScreen()
+        2 -> SettingsScreen()
     }
 }
