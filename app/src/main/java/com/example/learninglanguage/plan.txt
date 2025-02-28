@@ -1,0 +1,17 @@
+[Header: Logo + Profile + Notifications]
+|
+|-- Welcome Section: "Chào Mai! Bạn còn 2 bài để hoàn thành hôm nay."
+|   |-- Daily Streak: 🔥 7 ngày
+|   |-- XP Progress Bar: ▰▰▰▰▰ 80%
+|
+|-- Continue Learning Button: "Tiếp tục Bài 5: Gia đình"
+|
+|-- Skills Grid: [Nghe] [Nói] [Đọc] [Viết]
+|
+|-- Featured Topics Carousel: Du lịch, Công việc, Ẩm thực...
+|
+|-- Daily Challenge Card: "Dịch câu này và nhận 50 XP!"
+|
+|-- Community Section: "Thách đấu với bạn bè" + Leaderboard
+|
+[Footer: Support + Social Media]
