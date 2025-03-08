@@ -27,7 +27,7 @@ fun LessonItem(title: String, icon: ImageVector) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = Color.Black, // Có thể thay đổi màu sắc theo theme
+                tint = Color.Black,
                 modifier = Modifier.size(50.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
