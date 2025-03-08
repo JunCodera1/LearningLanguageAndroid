@@ -43,7 +43,7 @@ fun BtnLoginWithFB(onClick: () -> Unit){
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(id = R.drawable.fb_logo), // Thay thế bằng icon của bạn
+                painter = painterResource(id = R.drawable.fb_logo),
                 contentDescription = "Facebook Logo",
                 modifier = Modifier.size(30.dp)
             )

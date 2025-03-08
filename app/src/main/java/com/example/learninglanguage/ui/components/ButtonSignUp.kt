@@ -11,16 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BtnSignUp(onClick: () -> Unit){
+fun BtnSignUp(onClick: () -> Unit, isLoading: Boolean) {
     OutlinedButton(
-        onClick = onClick,
-
-        modifier = Modifier.width(400.dp)
+        onClick = { if (!isLoading) onClick() }, // Chặn khi đang loading
+        modifier = Modifier.width(400.dp),
+        enabled = !isLoading // Disable khi đang loading
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Sign Up")
+            Text(if (isLoading) "Loading..." else "Sign Up")
         }
     }
 }

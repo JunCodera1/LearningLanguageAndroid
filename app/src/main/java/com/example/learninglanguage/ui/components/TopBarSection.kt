@@ -18,19 +18,19 @@ fun TopAppBarSection() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically // ✅ Sửa lỗi Layout.Alignment
+        verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = { /* TODO: Mở menu */ }) {
             Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu")
         }
-        Row(verticalAlignment = Alignment.CenterVertically) { // ✅ Sửa lỗi Layout.Alignment
-            Text(text = "85", fontSize = 18.sp, color = Color.Yellow)
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(imageVector = Icons.Filled.Whatshot, contentDescription = "Streak", tint = Color.Red)
-            Text(text = "12", fontSize = 18.sp, color = Color.Red)
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Hearts", tint = Color.Magenta)
-            Text(text = "5", fontSize = 18.sp, color = Color.Magenta)
-        }
+//        Row(verticalAlignment = Alignment.CenterVertically) {
+//            Text(text = "85", fontSize = 18.sp, color = Color.Yellow)
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Icon(imageVector = Icons.Filled.Whatshot, contentDescription = "Streak", tint = Color.Red)
+//            Text(text = "12", fontSize = 18.sp, color = Color.Red)
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Hearts", tint = Color.Magenta)
+//            Text(text = "5", fontSize = 18.sp, color = Color.Magenta)
+//        }
     }
 }

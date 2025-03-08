@@ -1,56 +1,50 @@
 package com.example.learninglanguage.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.ui.res.painterResource
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Facebook
+import androidx.compose.material.icons.outlined.Android
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.learninglanguage.viewmodel.AuthState
-import com.example.learninglanguage.viewmodel.AuthViewModel
 import com.example.learninglanguage.R
-import com.example.learninglanguage.ui.components.BtnLoginWithFB
 import com.example.learninglanguage.ui.components.BtnSignUp
 import com.example.learninglanguage.ui.components.TextButtonHaveAccount
-
-
-
+import com.example.learninglanguage.viewmodel.AuthState
+import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
-fun SignUpPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
+fun SignUpScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
+    val nameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    val nameState = remember { mutableStateOf("") }
-    val authState = authViewModel.authState.observeAsState()
+    val authState by authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthState.Authenticated -> navController.navigate("home")
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message,Toast.LENGTH_SHORT).show()
+    // Xử lý trạng thái đăng ký
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Authenticated -> {
+                navController.navigate("home") {
+                    popUpTo("signup") { inclusive = true }
+                }
+            }
+            is AuthState.Error -> {
+                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            }
             else -> Unit
         }
     }
@@ -58,51 +52,75 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController, auth
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 24.dp, vertical = 40.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(60.dp))
-
-        TextField(
+        // Nhập tên
+        OutlinedTextField(
             value = nameState.value,
             onValueChange = { nameState.value = it },
             label = { Text("Name") },
-            shape = RoundedCornerShape(16.dp), // Bo góc
-            modifier = Modifier.width(400.dp)
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.width(350.dp),
+            singleLine = true
         )
-        Spacer(modifier = Modifier.height(60.dp))
 
-        TextField(
+        // Nhập email
+        OutlinedTextField(
             value = emailState.value,
             onValueChange = { emailState.value = it },
             label = { Text("Email") },
-            shape = RoundedCornerShape(16.dp), // Bo góc
-            modifier = Modifier.width(400.dp)
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.width(350.dp),
+            singleLine = true
         )
-        Spacer(modifier = Modifier.height(60.dp))
 
-        TextField(
+        // Nhập mật khẩu
+        OutlinedTextField(
             value = passwordState.value,
             onValueChange = { passwordState.value = it },
             label = { Text("Password") },
-            shape = RoundedCornerShape(16.dp), // Bo góc
-            modifier = Modifier.width(400.dp)
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.width(350.dp),
+            singleLine = true
         )
-        Spacer(modifier = Modifier.height(60.dp))
 
-        BtnSignUp( {
-            authViewModel.signup(nameState.value, emailState.value, passwordState.value)
-        })
-        Spacer(modifier = Modifier.height(30.dp))
+        // Nút Đăng ký
+        BtnSignUp(
+            onClick = {
+                authViewModel.signup(nameState.value, emailState.value, passwordState.value)
+            },
+            isLoading = authState is AuthState.Loading
+        )
 
-        BtnLoginWithFB({
-            // Thêm logic đăng nhập với Facebook nếu có
-        })
-        Spacer(modifier = Modifier.height(30.dp))
 
+        Button(
+            onClick = { /* Xử lý Google Sign Up */ },
+            modifier = Modifier.width(350.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Android, // Đổi thành Google nếu có
+                contentDescription = "Google Icon"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Sign up with Google")
+        }
+
+
+        // Sign Up with Facebook
+        Button(
+            onClick = {
+                // TODO: Implement Facebook sign-up logic
+            },
+            modifier = Modifier.width(350.dp)
+        ) {
+            Icon(imageVector = Icons.Filled.Facebook, contentDescription = "Facebook Icon")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Sign up with Facebook")
+        }
         TextButtonHaveAccount {
             navController.navigate("login")
         }
     }
 }
-
