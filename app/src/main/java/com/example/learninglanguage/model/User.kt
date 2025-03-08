@@ -1,4 +1,7 @@
 package com.example.learninglanguage.model
 
-class User {
-}
+data class User(
+    val name: String,
+    val email: String,
+    val avatarUrl: String?
+)
