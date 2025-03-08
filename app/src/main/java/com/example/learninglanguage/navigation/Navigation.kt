@@ -11,6 +11,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.learninglanguage.ui.components.BottomNavigation
 import com.example.learninglanguage.ui.screens.*
 import com.example.learninglanguage.viewmodel.AuthViewModel
+import com.example.learninglanguage.viewmodel.SearchViewModel
 
 @Composable
 fun Navigation(
@@ -36,7 +37,7 @@ fun Navigation(
             composable("home") { HomeScreen(navController = navController, authViewModel = authViewModel) }
             composable("profile") { ProfileScreen(navController = navController, authViewModel = authViewModel) }
             composable("settings") { SettingsScreen(navController = navController) }
-            composable("search"){ SearchScreen(navController = navController, authViewModel= authViewModel) }
+            composable("search"){ SearchScreen(navController = navController) }
             composable("notification"){ NotificationScreen(navController = navController, authViewModel= authViewModel) }
             composable("login") { LoginScreen(navController = navController, authViewModel = authViewModel) }
             composable("signup") { SignUpScreen(navController = navController, authViewModel = authViewModel) }

@@ -1,11 +1,16 @@
 package com.example.learninglanguage.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.learninglanguage.model.User
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthViewModel : ViewModel() {
+    var currentUser: User? by mutableStateOf(null)
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState

@@ -1,73 +1,62 @@
 package com.example.learninglanguage.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import TopAppBarSection
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.learninglanguage.ui.components.LessonGrid
-import com.example.learninglanguage.ui.components.TopAppBarSection
 import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     authViewModel: AuthViewModel
 ) {
-    val authState = authViewModel.authState.observeAsState()
+    val authState by authViewModel.authState.observeAsState()
 
-    LaunchedEffect(authState.value) {
-        if (authState.value is AuthState.Unauthenticated && navController.currentDestination?.route != "login") {
+    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Unauthenticated) {
             navController.navigate("login") {
                 popUpTo("home") { inclusive = true }
             }
         }
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TopAppBarSection()
+    Scaffold(
+        topBar = { TopAppBarSection(navController, authViewModel) },
+        content = { paddingValues ->
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Danh sách bài học
+                LessonGrid(navController)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.weight(1f))
 
-            // Lesson List
-            LessonGrid(navController)
-
-            Spacer(modifier = Modifier.weight(1f))
+            }
         }
-
-        // Sign Out Button in the top-right corner
-        IconButton(
-            onClick = {
-                authViewModel.signout()
-                navController.navigate("login") {
-                    popUpTo("home") { inclusive = true }
-                }
-            },
-            modifier = Modifier.align(Alignment.TopEnd) // Align to top-right
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ExitToApp,
-                contentDescription = "Sign Out"
-            )
-        }
-
-    }
+    )
 }
+
+
