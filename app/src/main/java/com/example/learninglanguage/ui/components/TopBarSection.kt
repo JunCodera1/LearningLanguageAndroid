@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopAppBarSection(
     navController: NavController,
-    authViewModel: AuthViewModel // Thêm lại authViewModel
+    authViewModel: AuthViewModel
 ) {
     val drawState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -61,7 +61,7 @@ fun TopAppBarSection(
                 }
             },
             navController = navController,
-            authViewModel = authViewModel // Truyền vào TopBar nếu cần
+            authViewModel = authViewModel
         )
     }
 }
@@ -171,10 +171,6 @@ fun DrawerContent(modifier: Modifier = Modifier, navController: NavController){
     )
 }
 
-@Composable
-fun ScreenContent(modifier: Modifier = Modifier){
-
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
