@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,7 +18,6 @@ import com.example.learninglanguage.ui.components.LessonGrid
 import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -29,7 +26,6 @@ fun HomeScreen(
 ) {
     val authState by authViewModel.authState.observeAsState()
 
-    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
     LaunchedEffect(authState) {
         if (authState is AuthState.Unauthenticated) {
             navController.navigate("login") {
@@ -37,26 +33,18 @@ fun HomeScreen(
             }
         }
     }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LessonGrid(navController)
+        Spacer(modifier = Modifier.weight(1f))
+    }
 
-    Scaffold(
-        topBar = { TopAppBarSection(navController, authViewModel) },
-        content = { paddingValues ->
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Danh sách bài học
-                LessonGrid(navController)
-
-                Spacer(modifier = Modifier.weight(1f))
-
-            }
-        }
-    )
 }
+
 
 
