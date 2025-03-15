@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -54,7 +55,16 @@ fun GetStartedScreen(navController: NavController) {
             )
         }
     }
-
+//val gradient = Brush.verticalGradient(
+//    colors = listOf(
+//        Color(0xFF2A1B3D), // Màu tím đậm (gần giống giữa gradient)
+//        Color(0xFF1A0D2C)
+//
+//    ),
+//    startY = 0f,
+//    endY = 600f
+//
+//)
 
     Column(
         modifier = Modifier
