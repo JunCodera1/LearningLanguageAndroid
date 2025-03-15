@@ -34,8 +34,7 @@ import com.example.learninglanguage.R
 import com.example.learninglanguage.ui.components.BtnLoginWithFB
 import com.example.learninglanguage.ui.components.BtnSignUp
 import com.example.learninglanguage.ui.components.TextButtonHaveAccount
-
-
+import androidx.compose.ui.tooling.preview.Preview as Preview1
 
 
 @Composable
@@ -97,6 +96,9 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController, auth
 
         BtnLoginWithFB({
             // Thêm logic đăng nhập với Facebook nếu có
+
+
+
         })
         Spacer(modifier = Modifier.height(30.dp))
 

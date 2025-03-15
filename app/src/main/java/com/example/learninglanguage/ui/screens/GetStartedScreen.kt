@@ -1,12 +1,16 @@
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +22,8 @@ import androidx.navigation.NavController
 import com.example.learninglanguage.R
 import com.example.learninglanguage.ui.components.BtnGetStarted
 import com.example.learninglanguage.ui.components.BtnHaveAccount
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // Data class để lưu trữ thông tin của mỗi trang
 data class PageData(
@@ -36,6 +42,19 @@ fun GetStartedScreen(navController: NavController) {
     )
 
     val pagerState = rememberPagerState(pageCount = { pages.size }) // Số trang bằng số phần tử trong danh sách
+
+
+    LaunchedEffect(pagerState) {
+        while (true) {
+            delay(3000L) // Dừng 3 giây trước khi chuyển trang
+            val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+            pagerState.animateScrollToPage(
+                page = nextPage,
+                animationSpec = tween(durationMillis = 1500) // Làm chậm hiệu ứng chuyển động
+            )
+        }
+    }
+
 
     Column(
         modifier = Modifier
