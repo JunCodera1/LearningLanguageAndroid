@@ -11,8 +11,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.CardMembership
+import androidx.compose.material.icons.rounded.Games
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Speaker
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -72,7 +74,7 @@ fun TopAppBarSection(
 fun DrawerContent(modifier: Modifier = Modifier, navController: NavController){
 
     Image(
-        painter = painterResource(R.drawable.ic_launcher_background),
+        painter = painterResource(R.drawable.water_point),
         contentDescription = null
     )
 
@@ -167,7 +169,51 @@ fun DrawerContent(modifier: Modifier = Modifier, navController: NavController){
             )
         } ,
         selected = false,
-        onClick = {}
+        onClick = {
+            navController.navigate("flash-card")
+        }
+    )
+
+    NavigationDrawerItem(
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.Speaker,
+                contentDescription = "Pronunciation",
+                modifier = Modifier.size(27.dp)
+            )
+        },
+        label ={
+            Text(
+                text = "Pronunciation",
+                fontSize = 17.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+        } ,
+        selected = false,
+        onClick = {
+            navController.navigate("pronunciation")
+        }
+    )
+
+    NavigationDrawerItem(
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.Games,
+                contentDescription = "Games",
+                modifier = Modifier.size(27.dp)
+            )
+        },
+        label ={
+            Text(
+                text = "Games",
+                fontSize = 17.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+        } ,
+        selected = false,
+        onClick = {
+            navController.navigate("games")
+        }
     )
 }
 

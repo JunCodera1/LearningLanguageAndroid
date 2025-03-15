@@ -31,6 +31,10 @@ fun Navigation(
         composable("notification"){ NotificationScreen(navController = navController, authViewModel= authViewModel) }
         composable("login") { LoginScreen(navController = navController, authViewModel = authViewModel) }
         composable("signup") { SignUpScreen(navController = navController, authViewModel = authViewModel) }
+        composable("flash-card"){ FlashCardScreen() }
+        composable("pronunciation"){ PronunciationScreen() }
+        composable("games"){ LearningGamesScreen() }
+
     }
 }
 
