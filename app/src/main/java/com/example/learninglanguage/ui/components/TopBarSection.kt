@@ -215,6 +215,26 @@ fun DrawerContent(modifier: Modifier = Modifier, navController: NavController){
             navController.navigate("games")
         }
     )
+    NavigationDrawerItem(
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.Games,
+                contentDescription = "Learning by Topic",
+                modifier = Modifier.size(27.dp)
+            )
+        },
+        label ={
+            Text(
+                text = "Learning by Topic",
+                fontSize = 17.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+        } ,
+        selected = false,
+        onClick = {
+            navController.navigate("topic")
+        }
+    )
 }
 
 

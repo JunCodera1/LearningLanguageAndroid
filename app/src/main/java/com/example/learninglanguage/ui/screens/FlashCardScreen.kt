@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +29,6 @@ data class FlashCard(
 
 @Composable
 fun FlashCardScreen() {
-    // Sample data - replace with your actual data source
     val flashCards = remember {
         listOf(
             FlashCard("Hello", "Xin chào", "Hello, how are you?"),
@@ -46,206 +44,262 @@ fun FlashCardScreen() {
     var knowCount by remember { mutableStateOf(0) }
     var unknownCount by remember { mutableStateOf(0) }
 
-    val rotation by animateFloatAsState(
-        targetValue = if (isFlipped) 180f else 0f,
-        label = "card_flip"
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Progress indicator
-        LinearProgressIndicator(
-            progress = (currentCardIndex + 1).toFloat() / flashCards.size,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
+        // Progress and stats
+        FlashCardProgress(
+            currentIndex = currentCardIndex,
+            totalCards = flashCards.size,
+            knowCount = knowCount,
+            unknownCount = unknownCount
         )
-
-        Text(
-            text = "Card ${currentCardIndex + 1}/${flashCards.size}",
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Stats
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Text("Known: $knowCount")
-            Text("Unknown: $unknownCount")
-        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
         // Flash card
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(0.9f)
-                .clip(RoundedCornerShape(16.dp))
-                .clickable { isFlipped = !isFlipped }
-                .graphicsLayer {
-                    rotationY = rotation
-                    cameraDistance = 12f * density
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            // Front of card
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .padding(24.dp)
-                    .graphicsLayer {
-                        rotationY = if (isFlipped) 180f else 0f
-                        alpha = if (isFlipped) 0f else 1f
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = flashCards[currentCardIndex].frontText,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = "Tap to flip",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                    )
-                }
-            }
-
-            // Back of card
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
-                    .padding(24.dp)
-                    .graphicsLayer {
-                        rotationY = if (isFlipped) 0f else 180f
-                        alpha = if (isFlipped) 1f else 0f
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = flashCards[currentCardIndex].backText,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = flashCards[currentCardIndex].example,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = "Tap to flip back",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
-                    )
-                }
-            }
-        }
+        FlashCard(
+            card = flashCards[currentCardIndex],
+            isFlipped = isFlipped,
+            onFlip = { isFlipped = !isFlipped }
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Control buttons
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            // Previous button
-            Button(
-                onClick = {
-                    if (currentCardIndex > 0) {
-                        currentCardIndex--
-                        isFlipped = false
-                    }
-                },
-                enabled = currentCardIndex > 0
-            ) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Previous")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Previous")
+        // Navigation and feedback controls
+        CardControls(
+            currentIndex = currentCardIndex,
+            totalCards = flashCards.size,
+            onPrevious = {
+                if (currentCardIndex > 0) {
+                    currentCardIndex--
+                    isFlipped = false
+                }
+            },
+            onNext = { navigateToNextCard(currentCardIndex, flashCards.size) { currentCardIndex++; isFlipped = false } },
+            onKnow = {
+                knowCount++
+                navigateToNextCard(currentCardIndex, flashCards.size) { currentCardIndex++; isFlipped = false }
+            },
+            onDontKnow = {
+                unknownCount++
+                navigateToNextCard(currentCardIndex, flashCards.size) { currentCardIndex++; isFlipped = false }
             }
+        )
+    }
+}
 
-            // Next button
-            Button(
-                onClick = {
-                    if (currentCardIndex < flashCards.size - 1) {
-                        currentCardIndex++
-                        isFlipped = false
-                    }
-                },
-                enabled = currentCardIndex < flashCards.size - 1
-            ) {
-                Text("Next")
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(Icons.Default.ArrowForward, contentDescription = "Next")
-            }
+@Composable
+fun FlashCardProgress(
+    currentIndex: Int,
+    totalCards: Int,
+    knowCount: Int,
+    unknownCount: Int
+) {
+    LinearProgressIndicator(
+        progress = (currentIndex + 1).toFloat() / totalCards,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    )
+
+    Text(
+        text = "Card ${currentIndex + 1}/$totalCards",
+        modifier = Modifier.padding(bottom = 16.dp)
+    )
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text("Known: $knowCount")
+        Text("Unknown: $unknownCount")
+    }
+}
+
+@Composable
+fun FlashCard(
+    card: FlashCard,
+    isFlipped: Boolean,
+    onFlip: () -> Unit
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (isFlipped) 180f else 0f,
+        label = "card_flip"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .aspectRatio(1.5f)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onFlip)
+            .graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 12f * density
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        CardFront(
+            text = card.frontText,
+            isVisible = !isFlipped
+        )
+
+        CardBack(
+            translation = card.backText,
+            example = card.example,
+            isVisible = isFlipped
+        )
+    }
+}
+
+@Composable
+fun CardFront(text: String, isVisible: Boolean) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(24.dp)
+            .graphicsLayer {
+                rotationY = if (!isVisible) 180f else 0f
+                alpha = if (isVisible) 1f else 0f
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = text,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Tap to flip",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+fun CardBack(translation: String, example: String, isVisible: Boolean) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .padding(24.dp)
+            .graphicsLayer {
+                rotationY = if (isVisible) 0f else 180f
+                alpha = if (isVisible) 1f else 0f
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = translation,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = example,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Tap to flip back",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+fun CardControls(
+    currentIndex: Int,
+    totalCards: Int,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    onKnow: () -> Unit,
+    onDontKnow: () -> Unit
+) {
+    // Navigation buttons
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Button(
+            onClick = onPrevious,
+            enabled = currentIndex > 0
+        ) {
+            Icon(Icons.Default.ArrowBack, contentDescription = "Previous")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Previous")
         }
 
-        // Know/Don't know buttons
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        Button(
+            onClick = onNext,
+            enabled = currentIndex < totalCards - 1
         ) {
-            Button(
-                onClick = {
-                    unknownCount++
-                    if (currentCardIndex < flashCards.size - 1) {
-                        currentCardIndex++
-                        isFlipped = false
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Icon(Icons.Default.Close, contentDescription = "Don't Know")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Don't Know")
-            }
-
-            Button(
-                onClick = {
-                    knowCount++
-                    if (currentCardIndex < flashCards.size - 1) {
-                        currentCardIndex++
-                        isFlipped = false
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-            ) {
-                Icon(Icons.Default.Check, contentDescription = "Know")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Know")
-            }
+            Text("Next")
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(Icons.Default.ArrowForward, contentDescription = "Next")
         }
+    }
+
+    // Knowledge feedback buttons
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Button(
+            onClick = onDontKnow,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+        ) {
+            Icon(Icons.Default.Close, contentDescription = "Don't Know")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Don't Know")
+        }
+
+        Button(
+            onClick = onKnow,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        ) {
+            Icon(Icons.Default.Check, contentDescription = "Know")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Know")
+        }
+    }
+}
+
+// Utility function to navigate to next card if available
+private fun navigateToNextCard(currentIndex: Int, totalCards: Int, navigate: () -> Unit) {
+    if (currentIndex < totalCards - 1) {
+        navigate()
     }
 }

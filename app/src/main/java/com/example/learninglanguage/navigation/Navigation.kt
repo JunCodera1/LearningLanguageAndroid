@@ -31,6 +31,7 @@ fun Navigation(
         composable("flash-card"){ FlashCardScreen() }
         composable("pronunciation"){ PronunciationScreen() }
         composable("games"){ LearningGamesScreen() }
+        composable("topic"){ TopicBasedLearningScreen() }
 
     }
 }
