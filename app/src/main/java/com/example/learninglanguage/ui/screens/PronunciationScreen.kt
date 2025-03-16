@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import java.security.SecureRandom
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ data class PronunciationItem(
 
 @Composable
 fun PronunciationScreen() {
+    val secureRandom = SecureRandom()
     val pronunciationItems = remember {
         listOf(
             PronunciationItem(
@@ -244,8 +246,7 @@ fun PronunciationScreen() {
                                 coroutineScope.launch {
                                     while (isRecording) {
                                         delay(100)
-                                        recordingAmplitude = (Math.random() * 0.5 + 0.2).toFloat()
-                                    }
+                                        recordingAmplitude = (0.2 + secureRandom.nextDouble() * 0.5).toFloat()                                    }
                                 }
                             } else if (recordingAmplitude > 0) {
                                 // Finished recording

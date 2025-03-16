@@ -1,8 +1,7 @@
 package com.example.learninglanguage
 
-import DrawerContent
-import TopAppBarSection
-import TopBar
+import com.example.learninglanguage.ui.components.DrawerContent
+import com.example.learninglanguage.ui.components.TopBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
