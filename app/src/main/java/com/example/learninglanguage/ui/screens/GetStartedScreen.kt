@@ -1,15 +1,20 @@
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -18,6 +23,9 @@ import androidx.navigation.NavController
 import com.example.learninglanguage.R
 import com.example.learninglanguage.ui.components.BtnGetStarted
 import com.example.learninglanguage.ui.components.BtnHaveAccount
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 // Data class để lưu trữ thông tin của mỗi trang
 data class PageData(
@@ -37,6 +45,27 @@ fun GetStartedScreen(navController: NavController) {
 
     val pagerState = rememberPagerState(pageCount = { pages.size }) // Số trang bằng số phần tử trong danh sách
 
+
+    LaunchedEffect(pagerState) {
+        while (true) {
+            delay(3000L) // Dừng 3 giây trước khi chuyển trang
+            val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+            pagerState.animateScrollToPage(
+                page = nextPage,
+                animationSpec = tween(durationMillis = 1500) // Làm chậm hiệu ứng chuyển động
+            )
+        }
+    }
+//val gradient = Brush.verticalGradient(
+//    colors = listOf(
+//        Color(0xFF2A1B3D), // Màu tím đậm (gần giống giữa gradient)
+//        Color(0xFF1A0D2C)
+//
+//    ),
+//    startY = 0f,
+//    endY = 600f
+//
+//)
     Column(
         modifier = Modifier
             .fillMaxSize()
