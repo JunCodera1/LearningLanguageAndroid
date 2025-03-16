@@ -50,31 +50,46 @@ fun MainScreen(authViewModel: AuthViewModel) {
     val drawState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    // Lấy route hiện tại
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = backStackEntry?.destination?.route
+
+    // Xác định các màn hình không cần hiển thị TopBar và BottomBar
+    val hideNavScreens = listOf("login", "signup")
+    val shouldShowNav = currentDestination !in hideNavScreens
+
     ModalNavigationDrawer(
         drawerState = drawState,
         drawerContent = {
-            ModalDrawerSheet {
-                DrawerContent(navController = navController)
+            // Chỉ hiển thị drawer khi đã đăng nhập
+            if (shouldShowNav) {
+                ModalDrawerSheet {
+                    DrawerContent(navController = navController)
+                }
             }
-        }
+        },
+        // Chỉ cho phép gesture mở drawer khi đã đăng nhập
+        gesturesEnabled = shouldShowNav
     ) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopBar(
-                    onOpenDrawer = {
-                        scope.launch {
-                            if (drawState.isClosed) drawState.open() else drawState.close()
-                        }
-                    },
-                    navController = navController,
-                    authViewModel = authViewModel
-                )
+                // Chỉ hiển thị TopBar khi đã đăng nhập (không phải ở màn hình đăng nhập/đăng ký)
+                if (shouldShowNav) {
+                    TopBar(
+                        onOpenDrawer = {
+                            scope.launch {
+                                if (drawState.isClosed) drawState.open() else drawState.close()
+                            }
+                        },
+                        navController = navController,
+                        authViewModel = authViewModel
+                    )
+                }
             },
             bottomBar = {
-                val backStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = backStackEntry?.destination?.route
-                if (currentDestination !in listOf("login", "signup")) {
+                // Chỉ hiển thị BottomBar khi đã đăng nhập
+                if (shouldShowNav) {
                     BottomNavigation(navController = navController, authViewModel = authViewModel)
                 }
             }
@@ -87,5 +102,3 @@ fun MainScreen(authViewModel: AuthViewModel) {
         }
     }
 }
-
-
