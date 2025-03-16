@@ -1,7 +1,5 @@
 package com.example.learninglanguage
 
-import com.example.learninglanguage.ui.components.DrawerContent
-import com.example.learninglanguage.ui.components.TopBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -23,6 +22,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.learninglanguage.navigation.Navigation
 import com.example.learninglanguage.ui.components.BottomNavigation
+import com.example.learninglanguage.ui.components.DrawerContent
+import com.example.learninglanguage.ui.components.TopBar
 import com.example.learninglanguage.ui.theme.LearningLanguageTheme
 import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
@@ -45,36 +46,41 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(authViewModel: AuthViewModel) {
     val navController = rememberNavController()
-    val authState by authViewModel.authState.observeAsState(AuthState.Unauthenticated)
+
+    // Use remember to create a temporary AuthState
+    val authStateValue = remember { AuthState.Unauthenticated }
+
+    // Use a direct approach without initial value
+    val authState by authViewModel.authState.observeAsState()
 
     val drawState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // Lấy route hiện tại
+    // Get current route
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination?.route
 
-    // Xác định các màn hình không cần hiển thị TopBar và BottomBar
+    // Define screens that don't need TopBar and BottomBar
     val hideNavScreens = listOf("login", "signup")
     val shouldShowNav = currentDestination !in hideNavScreens
 
     ModalNavigationDrawer(
         drawerState = drawState,
         drawerContent = {
-            // Chỉ hiển thị drawer khi đã đăng nhập
+            // Only show drawer when logged in and on visible nav screens
             if (shouldShowNav) {
                 ModalDrawerSheet {
                     DrawerContent(navController = navController)
                 }
             }
         },
-        // Chỉ cho phép gesture mở drawer khi đã đăng nhập
+        // Only enable drawer gestures when on visible nav screens
         gesturesEnabled = shouldShowNav
     ) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                // Chỉ hiển thị TopBar khi đã đăng nhập (không phải ở màn hình đăng nhập/đăng ký)
+                // Only show TopBar when not on login/signup screens
                 if (shouldShowNav) {
                     TopBar(
                         onOpenDrawer = {
@@ -88,7 +94,7 @@ fun MainScreen(authViewModel: AuthViewModel) {
                 }
             },
             bottomBar = {
-                // Chỉ hiển thị BottomBar khi đã đăng nhập
+                // Only show BottomBar when not on login/signup screens
                 if (shouldShowNav) {
                     BottomNavigation(navController = navController, authViewModel = authViewModel)
                 }

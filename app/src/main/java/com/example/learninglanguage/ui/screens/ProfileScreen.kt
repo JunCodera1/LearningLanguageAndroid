@@ -46,7 +46,7 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Avatar người dùng (Hỗ trợ ảnh URL)
-                val avatarUrl = user?.avatarUrl ?: "" // Thay bằng đường dẫn avatar thực tế
+                val avatarUrl = user?.photoUrl ?: "" // Thay bằng đường dẫn avatar thực tế
                 Image(
                     painter = if (avatarUrl.isNotEmpty()) rememberImagePainter(avatarUrl)
                     else painterResource(id = R.drawable.fb_logo),

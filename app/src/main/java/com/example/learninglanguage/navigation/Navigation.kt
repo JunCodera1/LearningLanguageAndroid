@@ -8,6 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 import com.example.learninglanguage.ui.screens.*
+import com.example.learninglanguage.ui.screens.createScreens.CreateGroupScreen
+import com.example.learninglanguage.ui.screens.createScreens.CreatePostScreen
+import com.example.learninglanguage.ui.screens.createScreens.CreateQuestionScreen
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
@@ -32,6 +35,9 @@ fun Navigation(
         composable("pronunciation"){ PronunciationScreen() }
         composable("games"){ LearningGamesScreen() }
         composable("topic"){ TopicBasedLearningScreen() }
+        composable("create-post"){ CreatePostScreen(navController) }
+        composable("create-question"){ CreateQuestionScreen(navController) }
+        composable("create-group"){ CreateGroupScreen(navController) }
 
     }
 }
