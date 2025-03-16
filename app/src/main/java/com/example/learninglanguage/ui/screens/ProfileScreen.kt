@@ -100,7 +100,9 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
                 Button(
                     onClick = {
                         authViewModel.signout()
-                        navController.navigate("login") // Chuyển hướng về màn hình đăng nhập
+                        navController.navigate("login") {
+                            popUpTo("home") { inclusive = true }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = GreenJC),
                     modifier = Modifier.fillMaxWidth(0.6f) // Giới hạn chiều rộng

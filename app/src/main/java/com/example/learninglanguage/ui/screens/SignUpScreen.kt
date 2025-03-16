@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Facebook
 import androidx.compose.material.icons.outlined.Android
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.learninglanguage.R
@@ -34,7 +36,7 @@ fun SignUpScreen(
     val authState by authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
-    // Xử lý trạng thái đăng ký
+    // Handle registration state
     LaunchedEffect(authState) {
         when (authState) {
             is AuthState.Authenticated -> {
@@ -56,37 +58,58 @@ fun SignUpScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Nhập tên
+        // Name input
         OutlinedTextField(
             value = nameState.value,
-            onValueChange = { nameState.value = it },
+            onValueChange = { newText ->
+                if (newText.length <= 30) { // Max length of 30 characters
+                    nameState.value = newText
+                }
+            },
             label = { Text("Name") },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.width(350.dp),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text
+            )
         )
 
-        // Nhập email
+        // Email input
         OutlinedTextField(
             value = emailState.value,
-            onValueChange = { emailState.value = it },
+            onValueChange = { newText ->
+                if (newText.length <= 50) { // Max length of 50 characters
+                    emailState.value = newText
+                }
+            },
             label = { Text("Email") },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.width(350.dp),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            )
         )
 
-        // Nhập mật khẩu
+        // Password input
         OutlinedTextField(
             value = passwordState.value,
-            onValueChange = { passwordState.value = it },
+            onValueChange = { newText ->
+                if (newText.length <= 20) { // Max length of 20 characters
+                    passwordState.value = newText
+                }
+            },
             label = { Text("Password") },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.width(350.dp),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password
+            )
         )
 
-        // Nút Đăng ký
+        // Sign Up button
         BtnSignUp(
             onClick = {
                 authViewModel.signup(nameState.value, emailState.value, passwordState.value)
@@ -94,24 +117,23 @@ fun SignUpScreen(
             isLoading = authState is AuthState.Loading
         )
 
-
+        // Google Sign Up button
         Button(
-            onClick = { /* Xử lý Google Sign Up */ },
+            onClick = { /* Handle Google Sign Up */ },
             modifier = Modifier.width(350.dp)
         ) {
             Icon(
-                imageVector = Icons.Outlined.Android, // Đổi thành Google nếu có
+                imageVector = Icons.Outlined.Android, // Change to Google if available
                 contentDescription = "Google Icon"
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text("Sign up with Google")
         }
 
-
-        // Sign Up with Facebook
+        // Facebook Sign Up button
         Button(
             onClick = {
-                // TODO: Implement Facebook sign-up logic
+                // Facebook sign-up logic
             },
             modifier = Modifier.width(350.dp)
         ) {
@@ -119,6 +141,8 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.width(8.dp))
             Text("Sign up with Facebook")
         }
+
+        // Already have account text button
         TextButtonHaveAccount {
             navController.navigate("login")
         }

@@ -1,17 +1,14 @@
 package com.example.learninglanguage.navigation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.learninglanguage.ui.components.BottomNavigation
+
 import com.example.learninglanguage.ui.screens.*
 import com.example.learninglanguage.viewmodel.AuthViewModel
-import com.example.learninglanguage.viewmodel.SearchViewModel
 
 @Composable
 fun Navigation(
