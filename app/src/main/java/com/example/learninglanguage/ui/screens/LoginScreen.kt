@@ -1,38 +1,52 @@
 package com.example.learninglanguage.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.learninglanguage.ui.components.BtnDontHaveAnAccount
-import com.example.learninglanguage.ui.components.BtnLogin
-import com.example.learninglanguage.ui.components.BtnLoginWithFB
+import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
-
-
-
-
 @Composable
-fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    // Observe authentication state
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Authenticated -> {
+                navController.navigate("home") {
+                    popUpTo("login") { inclusive = true }
+                }
+            }
+            is AuthState.Error -> {
+                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,40 +54,60 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController, authV
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Email input field
         OutlinedTextField(
             value = emailState.value,
             onValueChange = { emailState.value = it },
             label = { Text("Email") },
-            shape = RoundedCornerShape(16.dp), // Bo góc
-            modifier = Modifier.width(400.dp)
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.width(350.dp),
+            singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Password input field
         OutlinedTextField(
             value = passwordState.value,
             onValueChange = { passwordState.value = it },
             label = { Text("Password") },
-            shape = RoundedCornerShape(16.dp), // Bo góc
-            modifier = Modifier.width(400.dp)
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.width(350.dp),
+            singleLine = true,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                    )
+                }
+            }
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
-        BtnLogin ({
-         authViewModel.run { login(emailState.value, passwordState.value) }
-        navController.navigate("home")
-        })
+        Spacer(modifier = Modifier.height(20.dp))
 
-        Spacer(modifier = Modifier.height(60.dp))
+        // Login button
+        Button(
+            onClick = {
+                authViewModel.login(emailState.value, passwordState.value)
+            },
+            modifier = Modifier.width(200.dp),
+            enabled = authState !is AuthState.Loading
+        ) {
+            Text(text = if (authState is AuthState.Loading) "Logging in..." else "Login")
+        }
 
-        BtnLoginWithFB({
-            // Thêm logic đăng nhập với Facebook nếu có
-        })
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        BtnDontHaveAnAccount ({
-            navController.navigate("signup")
-        })
-
+        // Sign-up navigation button
+        TextButton(onClick = { navController.navigate("signup") }) {
+            Text("Don't have an account? Sign up now")
+        }
     }
 }
+
+
+

@@ -26,6 +26,7 @@ import com.example.learninglanguage.ui.components.BtnHaveAccount
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 // Data class để lưu trữ thông tin của mỗi trang
 data class PageData(
     val imageRes: Int, // ID hình ảnh
@@ -65,7 +66,6 @@ fun GetStartedScreen(navController: NavController) {
 //    endY = 600f
 //
 //)
-
     Column(
         modifier = Modifier
             .fillMaxSize()

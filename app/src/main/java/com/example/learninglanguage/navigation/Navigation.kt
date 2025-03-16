@@ -1,32 +1,39 @@
 package com.example.learninglanguage.navigation
 
-import GetStartedScreen
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.learninglanguage.ui.screens.HomeScreen
-import com.example.learninglanguage.ui.screens.LoginPage
-import com.example.learninglanguage.ui.screens.SignUpPage
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.learninglanguage.ui.components.BottomNavigation
+import com.example.learninglanguage.ui.screens.*
 import com.example.learninglanguage.viewmodel.AuthViewModel
+import com.example.learninglanguage.viewmodel.SearchViewModel
 
 @Composable
-fun Navigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel){
-    val navController = rememberNavController()
+fun Navigation(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
+    navController: NavHostController
+) {
+    NavHost(
+        navController = navController,
+        startDestination = "home", // Mặc định vào màn hình Home
+        modifier = modifier
+    ) {
+        composable("home") { HomeScreen(navController = navController, authViewModel = authViewModel) }
+        composable("profile") { ProfileScreen(navController = navController, authViewModel = authViewModel) }
+        composable("settings") { SettingsScreen(navController = navController) }
+        composable("search"){ SearchScreen(navController = navController) }
+        composable("notification"){ NotificationScreen(navController = navController, authViewModel= authViewModel) }
+        composable("login") { LoginScreen(navController = navController, authViewModel = authViewModel) }
+        composable("signup") { SignUpScreen(navController = navController, authViewModel = authViewModel) }
+        composable("flash-card"){ FlashCardScreen() }
+        composable("pronunciation"){ PronunciationScreen() }
+        composable("games"){ LearningGamesScreen() }
 
-    NavHost(navController = navController, startDestination = "get-started", builder = {
-        composable("get-started"){
-            GetStartedScreen(navController)
-        }
-        composable("login"){
-            LoginPage(modifier, navController, authViewModel)
-        }
-        composable("signup"){
-            SignUpPage(modifier, navController, authViewModel)
-        }
-        composable("home"){
-            HomeScreen(modifier, navController, authViewModel)
-        }
-    })
+    }
 }

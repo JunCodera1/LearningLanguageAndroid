@@ -1,43 +1,51 @@
 package com.example.learninglanguage.ui.screens
 
+import TopAppBarSection
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.learninglanguage.ui.components.LessonGrid
 import com.example.learninglanguage.viewmodel.AuthState
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
-    val authState = authViewModel.authState.observeAsState()
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
+    val authState by authViewModel.authState.observeAsState()
 
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthState.Unauthenticated -> navController.navigate("login")
-            else -> Unit
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Unauthenticated) {
+            navController.navigate("login") {
+                popUpTo("home") { inclusive = true }
+            }
         }
     }
-
     Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text="Home Page", fontSize = 32.sp)
-
-        TextButton(onClick = {
-            authViewModel.signout()
-        }) {
-            Text(text = "Sign out")
-        }
+        LessonGrid(navController)
+        Spacer(modifier = Modifier.weight(1f))
     }
+
 }
+
+
+
