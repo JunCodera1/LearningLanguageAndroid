@@ -19,19 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import com.example.learninglanguage.R
 import com.example.learninglanguage.ui.theme.GreenJC
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
 fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
-    val user = authViewModel.currentUser // Lấy thông tin người dùng
+    val user = authViewModel.currentUser // Get user information
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5)) // Màu nền nhẹ nhàng
+            .background(Color(0xFFF5F5F5)) // Light background color
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -45,21 +45,31 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Avatar người dùng (Hỗ trợ ảnh URL)
-                val avatarUrl = user?.photoUrl ?: "" // Thay bằng đường dẫn avatar thực tế
-                Image(
-                    painter = if (avatarUrl.isNotEmpty()) rememberImagePainter(avatarUrl)
-                    else painterResource(id = R.drawable.fb_logo),
-                    contentDescription = "User Avatar",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
-                )
+                // User avatar (supports URL images)
+                val avatarUrl = user?.photoUrl ?: "" // Replace with actual avatar path
+                if (avatarUrl.isNotEmpty()) {
+                    AsyncImage(
+                        model = avatarUrl,
+                        contentDescription = "User Avatar",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.fb_logo),
+                        contentDescription = "User Avatar",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clip(CircleShape)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Tiêu đề Profile
+                // Profile Title
                 Text(
                     text = "Profile",
                     fontSize = 32.sp,
@@ -70,15 +80,15 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 user?.let {
-                    // Thông tin người dùng
+                    // User information
                     Text(text = it.name, fontSize = 22.sp, fontWeight = FontWeight.Medium)
                     Text(text = it.email, fontSize = 18.sp, color = Color.Gray)
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Nút Edit Profile
+                    // Edit Profile Button
                     OutlinedButton(
-                        onClick = { /* TODO: Chuyển hướng đến màn hình chỉnh sửa hồ sơ */ },
+                        onClick = { /* TODO: Navigate to edit profile screen */ },
                         shape = RoundedCornerShape(50),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = GreenJC)
                     ) {
@@ -96,16 +106,16 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Nút Logout
+                // Logout Button
                 Button(
                     onClick = {
                         authViewModel.signout()
-                        navController.navigate("login") {
+                        navController.navigate( "login") {
                             popUpTo("home") { inclusive = true }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = GreenJC),
-                    modifier = Modifier.fillMaxWidth(0.6f) // Giới hạn chiều rộng
+                    modifier = Modifier.fillMaxWidth(0.6f) // Limit width
                 ) {
                     Text("Logout", fontSize = 18.sp, color = Color.White)
                 }
