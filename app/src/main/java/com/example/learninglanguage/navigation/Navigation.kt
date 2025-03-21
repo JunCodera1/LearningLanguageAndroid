@@ -11,6 +11,7 @@ import com.example.learninglanguage.ui.screens.*
 import com.example.learninglanguage.ui.screens.createScreens.CreateGroupScreen
 import com.example.learninglanguage.ui.screens.createScreens.CreatePostScreen
 import com.example.learninglanguage.ui.screens.createScreens.CreateQuestionScreen
+import com.example.learninglanguage.ui.screens.topicScreens.TopicBasedLearningScreen
 import com.example.learninglanguage.viewmodel.AuthViewModel
 
 @Composable
