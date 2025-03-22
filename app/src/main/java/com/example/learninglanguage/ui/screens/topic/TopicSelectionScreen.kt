@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.learninglanguage.data.model.VocabularyTopic
-import com.example.learninglanguage.ui.components.topic.TopicCard
+import com.example.learninglanguage.ui.components.card.TopicCard
 import com.example.learninglanguage.ui.components.topic.TopicSelectionHeader
 
 @Composable

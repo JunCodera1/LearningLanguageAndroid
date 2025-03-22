@@ -1,4 +1,4 @@
-package com.example.learninglanguage.ui.components.topic
+package com.example.learninglanguage.ui.components.card
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

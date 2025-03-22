@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.learninglanguage.data.model.VocabularyTopic
-import com.example.learninglanguage.ui.components.topic.ActionButton
-import com.example.learninglanguage.ui.components.topic.FeatureCard
+import com.example.learninglanguage.ui.components.button.ActionButton
+import com.example.learninglanguage.ui.components.card.FeatureCard
 import com.example.learninglanguage.ui.components.topic.ProgressStats
 import com.example.learninglanguage.ui.components.topic.TopicHeader
 

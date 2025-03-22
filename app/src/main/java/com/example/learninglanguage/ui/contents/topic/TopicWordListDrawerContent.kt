@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.learninglanguage.data.model.WordItem
-import com.example.learninglanguage.ui.components.topic.WordCard
+import com.example.learninglanguage.ui.components.card.PronunciationWordCard
 import kotlin.collections.forEach
 
 @Composable
@@ -32,7 +32,7 @@ fun WordListDrawerContents(words: List<WordItem>) {
             )
 
             words.forEach { word ->
-                WordCard(word = word)
+                PronunciationWordCard(word = word)
             }
         }
     }

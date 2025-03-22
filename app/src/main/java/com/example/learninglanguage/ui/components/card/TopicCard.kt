@@ -1,4 +1,4 @@
-package com.example.learninglanguage.ui.components.topic
+package com.example.learninglanguage.ui.components.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

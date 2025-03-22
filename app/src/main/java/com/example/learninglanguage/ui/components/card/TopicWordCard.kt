@@ -1,4 +1,4 @@
-package com.example.learninglanguage.ui.components.topic
+package com.example.learninglanguage.ui.components.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.learninglanguage.data.model.WordItem
 
 @Composable
-fun WordCard(word: WordItem) {
+fun PronunciationWordCard(word: WordItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

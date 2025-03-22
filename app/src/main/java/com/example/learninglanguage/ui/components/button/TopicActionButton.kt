@@ -1,4 +1,4 @@
-package com.example.learninglanguage.ui.components.topic
+package com.example.learninglanguage.ui.components.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
