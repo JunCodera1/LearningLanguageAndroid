@@ -56,7 +56,7 @@ fun TopicDetailScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.List,
-                                    contentDescription = "Word List"
+                                    contentDescription = "Open Word List"
                                 )
                             }
                         }
