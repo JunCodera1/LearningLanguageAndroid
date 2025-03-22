@@ -15,3 +15,26 @@
 |-- Community Section: "Thách đấu với bạn bè" + Leaderboard
 |
 [Footer: Support + Social Media]
+
+ui/
+├── components/
+│   ├── buttons/
+│   ├── cards/
+│   ├── dialogs/
+│   ├── inputs/
+│   ├── lesson/      (giữ nguyên từ cấu trúc hiện tại)
+│   └── nav/         (giữ nguyên từ cấu trúc hiện tại)
+├── screens/
+│   ├── auth/        (chứa LoginScreen, SignupScreen)
+│   ├── home/        (chứa HomeScreen và các phần liên quan)
+│   ├── learning/    (chứa LearningGamesScreen, PracticeScreen)
+│   ├── flashcard/   (chứa FlashCardScreen và các component riêng)
+│   ├── profile/     (chứa ProfileScreen)
+│   └── common/      (chứa MainScreen và các màn hình dùng chung)
+├── theme/
+│   ├── Color.kt
+│   ├── Theme.kt
+│   └── Typography.kt
+└── utils/
+    ├── Extensions.kt
+    └── UIHelpers.kt

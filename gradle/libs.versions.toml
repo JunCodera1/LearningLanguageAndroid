@@ -8,6 +8,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
+exposed = "0.46.0"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
 accompanist = "0.37.0"
@@ -72,6 +73,10 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 
 [libraries]
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-time = { module = "org.jetbrains.exposed:exposed-java-time", version.ref = "exposed" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose-v275 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -208,3 +213,6 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
+[bundles]
+exposed = ["exposed-core", "exposed-dao", "exposed-jdbc", "exposed-time"]
+androidx-compose = ["androidx-compose-bom"]

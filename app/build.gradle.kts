@@ -76,6 +76,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended)
     implementation (libs.facebook.login)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.exposed.core)
+    implementation(libs.bundles.exposed)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
